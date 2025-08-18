@@ -136,12 +136,4 @@ dist
 
 # Vite logs files
 vite.config.js.timestamp-*
-<<<<<<< HEAD
-<<<<<<< HEAD
 vite.config.ts.timestamp-*
-=======
-vite.config.ts.timestamp-*
->>>>>>> eb06551 (creacion de la api)
-=======
-vite.config.ts.timestamp-*
->>>>>>> origin/master
