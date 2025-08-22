@@ -1,27 +1,62 @@
+
 name: CI Node.js API
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
+    name: Test on Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
 
+      - name: Lint code
+        run: |
+          if [ -f package.json ] && grep -q 'eslint' package.json; then
+            npx eslint . || true
+          else
+            echo "ESLint no está configurado, omitiendo lint."
+          fi
+
       - name: Run tests
         run: npm test
+
+  build:
+    name: Build (dummy step)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build step
+        run: echo "Build exitoso (agrega aquí tu build real si aplica)"
+
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Deploy to Render
+        uses: JorgeLNJunior/render-deploy@v1.4.5
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
