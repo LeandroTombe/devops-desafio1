@@ -33,7 +33,25 @@ El archivo `.github/workflows/ci.yml` automatiza pruebas, build y despliegue:
 
 ---
 
-## ☁️ Despliegue automático en Render
+
+---
+
+## 🐳 Cómo usar Docker con esta app
+
+Puedes construir y correr la aplicación en un contenedor Docker fácilmente:
+
+1. **Construir la imagen Docker:**
+	```
+	docker build -t devops-desafio1 .
+	```
+
+2. **Ejecutar el contenedor:**
+	```
+	docker run -p 3000:3000 devops-desafio1
+	```
+
+Luego accede a tu API en [http://localhost:3000/hora](http://localhost:3000/hora)
+
 
 El workflow usa la acción [`JorgeLNJunior/render-deploy`](https://github.com/JorgeLNJunior/render-deploy) para desplegar en Render. Debes configurar estos secrets en tu repositorio:
 
