@@ -2,9 +2,21 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
+<<<<<<< HEAD
 // Middleware para leer JSON en requests
 app.use(express.json());
 
+=======
+// Importar el router de hora
+const horaRouter = require("./hora");
+
+// Middleware para leer JSON en requests
+app.use(express.json());
+
+// Usar el router de hora
+app.use(horaRouter);
+
+>>>>>>> origin/master
 // Ruta de inicio
 app.get("/", (req, res) => {
   res.send("Bienvenido a mi API 🚀");
